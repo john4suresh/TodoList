@@ -7,11 +7,10 @@ const ListItemContainer = (props) => {
   const { todo } = props;
 
   const renderItem = ({ item }) => {
-    console.log(item);
     return (
       <ListItem
         title={item.title}
-        id={item.key}
+        id={item.id}
         subTitle={item.subTitle}
         description={item.description}
       />
@@ -22,7 +21,7 @@ const ListItemContainer = (props) => {
       <FlatList
         data={todo}
         renderItem={renderItem}
-        keyExtractor={(item) => item.key}
+        keyExtractor={(item) => item.id.toString()}
       />
     </View>
   );
@@ -37,7 +36,7 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => {
   return {
-    todo: state.todo,
+    todo: state.todo.todoList,
   };
 };
 

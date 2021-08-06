@@ -11,14 +11,13 @@ export const Header = () => {
 
 const styles = StyleSheet.create({
   header: {
-    backgroundColor: "black",
-    height: 40,
-    flex: 0.1,
+    backgroundColor: "#664229",
+    height: 60,
     justifyContent: "center",
     alignItems: "center",
   },
   headerText: {
-    color: "white",
+    color: "#ffffff",
     fontSize: 20,
     textAlign: "center",
     fontWeight: "bold",

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import { Text, View, TextInput, StyleSheet } from "react-native";
 
@@ -9,12 +9,20 @@ import { connect } from "react-redux";
 import { addTodo } from "../redux/action";
 
 const Input = (props) => {
-  const { addTodo } = props;
+  const { addTodo, editItem } = props;
+  // console.log(editItem);
   const [temp, setTemp] = useState({
     title: "",
     subTitle: "",
     description: "",
   });
+
+  useEffect(() => {
+    if (editItem) {
+      setTemp(editItem);
+    }
+  }, [editItem]);
+  const [error, setError] = useState(false);
 
   const onChangeTextTitle = (text) => {
     setTemp((prevState) => ({ ...prevState, title: text }));
@@ -27,19 +35,27 @@ const Input = (props) => {
   };
 
   const addTodoItem = () => {
-    if (temp.title) {
+    if (temp.title && temp.subTitle && temp.description) {
+      console.log(temp);
       addTodo(temp);
       setTemp({
         title: "",
         subTitle: "",
         description: "",
       });
+      setError(false);
+    } else {
+      setError(true);
     }
-    return;
   };
 
   return (
     <View style={styles.container}>
+      {error ? (
+        <Text style={styles.errorMsg}>
+          Please fill the Title, Subtitle and Description
+        </Text>
+      ) : null}
       <View style={styles.title}>
         <TextInput
           style={styles.input}
@@ -69,7 +85,11 @@ const Input = (props) => {
         />
       </View>
       <View style={styles.button}>
-        <Button title="Add Todo" onPress={addTodoItem} />
+        <Button
+          title="Add Todo"
+          onPress={addTodoItem}
+          disabled={temp.title && temp.subTitle && temp.description}
+        />
       </View>
     </View>
   );
@@ -80,6 +100,9 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     paddingTop: 15,
+  },
+  errorMsg: {
+    color: "red",
   },
   input: {
     borderWidth: 1,
@@ -104,10 +127,16 @@ const styles = StyleSheet.create({
   },
 });
 
+const mapStateToProps = (state) => {
+  return {
+    editItem: state.todo.edit,
+  };
+};
+
 const mapDispatchToProps = (dispatch) => {
   return {
     addTodo: (item) => dispatch(addTodo(item)),
   };
 };
 
-export default connect(null, mapDispatchToProps)(Input);
+export default connect(mapStateToProps, mapDispatchToProps)(Input);

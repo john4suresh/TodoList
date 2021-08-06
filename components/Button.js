@@ -2,26 +2,33 @@ import React from "react";
 import { TouchableOpacity, Text, StyleSheet } from "react-native";
 
 export const Button = ({
-  size = 40,
   title,
   onPress,
+  disabled,
   style = {},
   textStyle = {},
 }) => {
   return (
-    <TouchableOpacity style={[styles(size).radius, style]} onPress={onPress}>
-      <Text style={[styles(size).text, textStyle]}>{title}</Text>
+    <TouchableOpacity
+      style={[
+        styles.button,
+        { backgroundColor: disabled ? "#664229" : "#66422980" },
+        style,
+      ]}
+      onPress={onPress}
+      disabled={false}
+    >
+      <Text style={[styles.text, textStyle]}>{title}</Text>
     </TouchableOpacity>
   );
 };
 
-const styles = (size) =>
-  StyleSheet.create({
-    radius: {
-      alignItems: "center",
-      justifyContent: "center",
-      borderColor: "black",
-      borderWidth: 2,
-    },
-    text: { color: "black", fontSize: 24 },
-  });
+const styles = StyleSheet.create({
+  button: {
+    alignItems: "center",
+    justifyContent: "center",
+    borderColor: "#000000",
+    borderWidth: 1,
+  },
+  text: { color: "#ffffff", fontSize: 24 },
+});
